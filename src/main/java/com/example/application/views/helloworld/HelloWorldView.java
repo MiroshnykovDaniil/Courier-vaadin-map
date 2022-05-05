@@ -2,6 +2,8 @@ package com.example.application.views.helloworld;
 
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dependency.JavaScript;
+import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -23,7 +25,6 @@ public class HelloWorldView extends HorizontalLayout {
         sayHello.addClickListener(e -> {
             Notification.show("Hello " + name.getValue());
         });
-
         setMargin(true);
         setVerticalComponentAlignment(Alignment.END, name, sayHello);
 
