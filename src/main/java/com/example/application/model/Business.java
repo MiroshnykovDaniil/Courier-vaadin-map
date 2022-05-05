@@ -40,8 +40,8 @@ public class Business{
             this.title=title;
             return this;
         }
-        public BusinessBuilder setAddress(String adress){
-            this.address = adress;
+        public BusinessBuilder setAddress(String address){
+            this.address = address;
             return this;
         }
         public BusinessBuilder setMenu(Set<Item> menu){
