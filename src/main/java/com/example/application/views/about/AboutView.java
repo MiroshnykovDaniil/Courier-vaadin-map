@@ -1,6 +1,10 @@
 package com.example.application.views.about;
 
 import com.example.application.views.MainLayout;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
@@ -12,7 +16,9 @@ import com.vaadin.flow.component.map.configuration.layer.TileLayer;
 import com.vaadin.flow.component.map.configuration.source.OSMSource;
 import com.vaadin.flow.component.map.configuration.source.XYZSource;
 import com.vaadin.flow.component.map.configuration.style.Icon;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.StreamResource;
@@ -99,7 +105,29 @@ public class AboutView extends VerticalLayout {
 
     }
 
+    private static VerticalLayout createDialogLayout() {
+
+        TextField firstNameField = new TextField("First name");
+        TextField lastNameField = new TextField("Last name");
+
+        VerticalLayout dialogLayout = new VerticalLayout(firstNameField,
+                lastNameField);
+        dialogLayout.setPadding(false);
+        dialogLayout.setSpacing(false);
+        dialogLayout.setAlignItems(FlexComponent.Alignment.STRETCH);
+        dialogLayout.getStyle().set("width", "18rem").set("max-width", "100%");
+
+        return dialogLayout;
+    }
+
+
     public void addIcons(Map map){
+
+        Dialog dialog = new Dialog();
+        VerticalLayout dialogLayout = createDialogLayout();
+        dialog.add(dialogLayout);
+
+
         Coordinate MacDonaldsCoordinates  = new Coordinate(4033717.7887060153,6447190.040808506);
         Icon.Options macIconOptions = new Icon.Options();
         StreamResource streamResource = new StreamResource("us-flag.png",
@@ -110,6 +138,10 @@ public class AboutView extends VerticalLayout {
         MarkerFeature MacDonalds = new MarkerFeature(MacDonaldsCoordinates, MacIcon);
         map.getFeatureLayer().addFeature(MacDonalds);
 
+        map.addFeatureClickListener(e->{
+            dialog.open();
+            dialog.add(e.getFeature().getType()+";"+e.getFeature().getId());
+        });
 
         Coordinate BufetCoordinates = new Coordinate(4033789.0296170535, 6447312.519258347);
         Icon.Options BufetIconOptions = new Icon.Options();
