@@ -1,5 +1,7 @@
 package com.example.application.views.about;
 
+import com.example.application.model.Business;
+import com.example.application.service.BusinessService;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
@@ -127,32 +129,35 @@ public class AboutView extends VerticalLayout {
         VerticalLayout dialogLayout = createDialogLayout();
         dialog.add(dialogLayout);
 
+        BusinessService service = new BusinessService();
+        service.initData();
+        service.addIcons(map);
 
-        Coordinate MacDonaldsCoordinates  = new Coordinate(4033717.7887060153,6447190.040808506);
-        Icon.Options macIconOptions = new Icon.Options();
-        StreamResource streamResource = new StreamResource("us-flag.png",
-                () -> getClass().getResourceAsStream("/META-INF/resources/images/mac.png"));
-        macIconOptions.setImg(streamResource);
-        macIconOptions.setImgSize(new Icon.ImageSize(100,100));
-        Icon MacIcon = new Icon(macIconOptions);
-        MarkerFeature MacDonalds = new MarkerFeature(MacDonaldsCoordinates, MacIcon);
-        map.getFeatureLayer().addFeature(MacDonalds);
+//        Coordinate MacDonaldsCoordinates  = new Coordinate(4033717.7887060153,6447190.040808506);
+//        Icon.Options macIconOptions = new Icon.Options();
+//        StreamResource streamResource = new StreamResource("us-flag.png",
+//                () -> getClass().getResourceAsStream("/META-INF/resources/images/mac.png"));
+//        macIconOptions.setImg(streamResource);
+//        macIconOptions.setImgSize(new Icon.ImageSize(100,100));
+//        Icon MacIcon = new Icon(macIconOptions);
+//        MarkerFeature MacDonalds = new MarkerFeature(MacDonaldsCoordinates, MacIcon);
+//        map.getFeatureLayer().addFeature(MacDonalds);
 
         map.addFeatureClickListener(e->{
             dialog.open();
             dialog.add(e.getFeature().getType()+";"+e.getFeature().getId());
         });
 
-        Coordinate BufetCoordinates = new Coordinate(4033789.0296170535, 6447312.519258347);
-        Icon.Options BufetIconOptions = new Icon.Options();
-        BufetIconOptions.setImgSize(new Icon.ImageSize(100,100));
-        streamResource = new StreamResource("us-flag.png",
-                () -> getClass().getResourceAsStream("/META-INF/resources/images/bufet.png"));
-        BufetIconOptions.setImg(streamResource);
-        Icon BufetIcon = new Icon(BufetIconOptions);
-
-        MarkerFeature Bufet = new MarkerFeature(BufetCoordinates, BufetIcon);
-        map.getFeatureLayer().addFeature(Bufet);
+//        Coordinate BufetCoordinates = new Coordinate(4033789.0296170535, 6447312.519258347);
+//        Icon.Options BufetIconOptions = new Icon.Options();
+//        BufetIconOptions.setImgSize(new Icon.ImageSize(100,100));
+//        streamResource = new StreamResource("us-flag.png",
+//                () -> getClass().getResourceAsStream("/META-INF/resources/images/bufet.png"));
+//        BufetIconOptions.setImg(streamResource);
+//        Icon BufetIcon = new Icon(BufetIconOptions);
+//
+//        MarkerFeature Bufet = new MarkerFeature(BufetCoordinates, BufetIcon);
+//        map.getFeatureLayer().addFeature(Bufet);
 
 
     }
