@@ -14,7 +14,7 @@ import java.util.*;
 
 public class BusinessService {
 
-    HashMap<Business, Feature> businessFeatureHashMap = new HashMap<>();
+    HashMap<Business, MarkerFeature> businessFeatureHashMap = new HashMap<>();
 
     public void initData(){
         //example of data for future refactoring
@@ -37,7 +37,10 @@ public class BusinessService {
                 () -> getClass().getResourceAsStream("/META-INF/resources/images/mac.png"));
         macIconOptions.setImg(streamResource);
         macIconOptions.setImgSize(new Icon.ImageSize(100,100));
+        //macIconOptions.setScale(0.3f);
+
         Icon MacIcon = new Icon(macIconOptions);
+        //MacIcon.setScale(0.3f);
 
         businessFeatureHashMap.put(builder.build(),new MarkerFeature(MacDonaldsCoordinates,MacIcon));
 

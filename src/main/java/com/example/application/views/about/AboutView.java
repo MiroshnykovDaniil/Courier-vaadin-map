@@ -2,6 +2,7 @@ package com.example.application.views.about;
 
 import com.example.application.model.Business;
 import com.example.application.service.BusinessService;
+import com.example.application.views.BusinessView;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
@@ -31,46 +32,18 @@ import java.util.List;
 @Route(value = "about", layout = MainLayout.class)
 public class AboutView extends VerticalLayout {
 
-    private final VerticalLayout verticalLayout;
-
-    String X= "";
-    String Y="";
-    Paragraph xy=new Paragraph("init");
-
     public AboutView() {
         setSpacing(false);
-
-        Image img = new Image("images/empty-plant.png", "placeholder plant");
-        img.setWidth("200px");
-        add(img);
-
-        add(new H2("This place intentionally left empty"));
+        add(new H2("Виберіть звідки замовити"));
 
         setSizeFull();
         setJustifyContentMode(JustifyContentMode.CENTER);
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         getStyle().set("text-align", "center");
 
-        verticalLayout = new VerticalLayout();
-        verticalLayout.setHeightFull();
-        verticalLayout.setPadding(false);
-        verticalLayout.setSpacing(false);
-        verticalLayout.setWidth("1200px");
-        verticalLayout.setClassName("main-view_navigation_control");
-        verticalLayout.getStyle()
-                .set("flexShrink", "0")
-                .set("background-color", "#FFFCF9")
-                .set("text-align", "center");
+        BusinessView businessView = new BusinessView();
+        add(businessView);
 
-        //map.addNavigationControl();
-        Map map = new Map();
-        verticalLayout.add(map);
-        //setupMapSource(map);
-        setupOsmSource(map);
-        addIcons(map);
-
-        add(verticalLayout);
-        add(xy);
         add(new Paragraph("It’s a place where you can grow your own UI 🤗"));
     }
     public void setupOsmSource(Map map){
@@ -97,71 +70,12 @@ public class AboutView extends VerticalLayout {
                 View view = map.getView();
                 view.setZoom(12);
             }
-            X=((Double)e.getCenter().getX()).toString();
-            Y=((Double)e.getCenter().getY()).toString();
-            xy.setText("x="+X+"y="+Y);
         });
         Coordinate coordinate = Coordinate.fromLonLat(36.2304,49.9935);
         map.getView().setCenter(coordinate);
         map.getView().setZoom(15);
 
     }
-
-    private static VerticalLayout createDialogLayout() {
-
-        TextField firstNameField = new TextField("First name");
-        TextField lastNameField = new TextField("Last name");
-
-        VerticalLayout dialogLayout = new VerticalLayout(firstNameField,
-                lastNameField);
-        dialogLayout.setPadding(false);
-        dialogLayout.setSpacing(false);
-        dialogLayout.setAlignItems(FlexComponent.Alignment.STRETCH);
-        dialogLayout.getStyle().set("width", "18rem").set("max-width", "100%");
-
-        return dialogLayout;
-    }
-
-
-    public void addIcons(Map map){
-
-        Dialog dialog = new Dialog();
-        VerticalLayout dialogLayout = createDialogLayout();
-        dialog.add(dialogLayout);
-
-        BusinessService service = new BusinessService();
-        service.initData();
-        service.addIcons(map);
-
-//        Coordinate MacDonaldsCoordinates  = new Coordinate(4033717.7887060153,6447190.040808506);
-//        Icon.Options macIconOptions = new Icon.Options();
-//        StreamResource streamResource = new StreamResource("us-flag.png",
-//                () -> getClass().getResourceAsStream("/META-INF/resources/images/mac.png"));
-//        macIconOptions.setImg(streamResource);
-//        macIconOptions.setImgSize(new Icon.ImageSize(100,100));
-//        Icon MacIcon = new Icon(macIconOptions);
-//        MarkerFeature MacDonalds = new MarkerFeature(MacDonaldsCoordinates, MacIcon);
-//        map.getFeatureLayer().addFeature(MacDonalds);
-
-        map.addFeatureClickListener(e->{
-            dialog.open();
-            dialog.add(e.getFeature().getType()+";"+e.getFeature().getId());
-        });
-
-//        Coordinate BufetCoordinates = new Coordinate(4033789.0296170535, 6447312.519258347);
-//        Icon.Options BufetIconOptions = new Icon.Options();
-//        BufetIconOptions.setImgSize(new Icon.ImageSize(100,100));
-//        streamResource = new StreamResource("us-flag.png",
-//                () -> getClass().getResourceAsStream("/META-INF/resources/images/bufet.png"));
-//        BufetIconOptions.setImg(streamResource);
-//        Icon BufetIcon = new Icon(BufetIconOptions);
-//
-//        MarkerFeature Bufet = new MarkerFeature(BufetCoordinates, BufetIcon);
-//        map.getFeatureLayer().addFeature(Bufet);
-
-
-    }
-
     public void setupMapSource(Map map){
         XYZSource.Options sourceOptions = new XYZSource.Options();
         // set the URL pattern for the map service containing x, y, and z parameters
