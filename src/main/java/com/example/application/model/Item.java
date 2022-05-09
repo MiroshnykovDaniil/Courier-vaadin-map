@@ -1,9 +1,15 @@
 package com.example.application.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.math.BigDecimal;
 
+@Entity
 public class Item {
 
+    @Id
+    @GeneratedValue(generator = "uuid2")
     private String id;
     private String title;
     private BigDecimal price;

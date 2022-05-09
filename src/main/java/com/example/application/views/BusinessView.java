@@ -5,7 +5,6 @@ import com.example.application.service.BusinessService;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.map.Map;
 import com.vaadin.flow.component.map.configuration.Coordinate;
-import com.vaadin.flow.component.map.configuration.Feature;
 import com.vaadin.flow.component.map.configuration.View;
 import com.vaadin.flow.component.map.configuration.feature.MarkerFeature;
 import com.vaadin.flow.component.map.configuration.layer.TileLayer;
@@ -15,8 +14,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class BusinessView extends VerticalLayout {
 
@@ -48,7 +45,6 @@ public class BusinessView extends VerticalLayout {
         BusinessService service = new BusinessService();
         service.initData();
         service.addIcons(map);
-
 
 
         map.addFeatureClickListener(e -> {
