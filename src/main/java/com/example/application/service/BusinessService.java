@@ -2,19 +2,27 @@ package com.example.application.service;
 
 import com.example.application.model.Business;
 import com.example.application.model.Item;
+import com.example.application.repository.BusinessRepository;
 import com.vaadin.flow.component.map.Map;
 import com.vaadin.flow.component.map.configuration.Coordinate;
 import com.vaadin.flow.component.map.configuration.Feature;
 import com.vaadin.flow.component.map.configuration.feature.MarkerFeature;
 import com.vaadin.flow.component.map.configuration.style.Icon;
 import com.vaadin.flow.server.StreamResource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.*;
 
+@Service
 public class BusinessService {
 
+    @Autowired
+    BusinessRepository businessRepository;
+
     HashMap<Business, MarkerFeature> businessFeatureHashMap = new HashMap<>();
+
 
     public void initData(){
         //example of data for future refactoring
