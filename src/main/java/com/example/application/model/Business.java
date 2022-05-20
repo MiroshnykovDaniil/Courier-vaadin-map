@@ -3,6 +3,7 @@ package com.example.application.model;
 import com.vaadin.flow.component.map.configuration.Coordinate;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "Business")
@@ -14,18 +15,18 @@ public class Business{
     private String address;
 
     @OneToMany
-    @Column(name = "menu")
-    private Set<Item> menu;
+    @Column(name = "items")
+    private Set<Item> items;
     @Embedded
     @Column(name = "coordinate")
     private Coordinate coordinate;
 
     // not sure if it needed
     public void addToMenu(Item item){
-        menu.add(item);
+        items.add(item);
     }
     public void removeFromMenu(Item item){
-        menu.remove(item);
+        items.remove(item);
     }
 
     // Purely for serialization/deserialization
@@ -33,17 +34,17 @@ public class Business{
         id=null;
         title=null;
         address=null;
-        menu=null;
+        items =null;
         coordinate=null;
     }
 
 
 
-    public Business(String title, String address, Set<Item> menu, Coordinate coordinate){
+    public Business(String title, String address, Set<Item> items, Coordinate coordinate){
         this.id=null;
         this.title = title;
         this.address = address;
-        this.menu = menu;
+        this.items = items;
         this.coordinate = coordinate;
     }
 
@@ -51,10 +52,10 @@ public class Business{
         return new BusinessBuilder();
     }
     public static class BusinessBuilder{
-        private String title;
-        private String address;
-        private Set<Item> menu;
-        private Coordinate coordinate;
+        private String title = "";
+        private String address ="";
+        private Set<Item> menu = new HashSet<>();
+        private Coordinate coordinate = new Coordinate();
 
         public BusinessBuilder setTitle(String title){
             this.title=title;
@@ -102,12 +103,12 @@ public class Business{
         this.address = address;
     }
 
-    public Set<Item> getMenu() {
-        return menu;
+    public Set<Item> getItems() {
+        return items;
     }
 
-    public void setMenu(Set<Item> menu) {
-        this.menu = menu;
+    public void setItems(Set<Item> menu) {
+        this.items = menu;
     }
 
     public Coordinate getCoordinate() {

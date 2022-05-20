@@ -3,6 +3,7 @@ package com.example.application.service;
 import com.example.application.model.Business;
 import com.example.application.model.Item;
 import com.example.application.repository.BusinessRepository;
+import com.example.application.repository.ItemRepository;
 import com.vaadin.flow.component.map.Map;
 import com.vaadin.flow.component.map.configuration.Coordinate;
 import com.vaadin.flow.component.map.configuration.Feature;
@@ -20,8 +21,27 @@ public class BusinessService {
 
     @Autowired
     BusinessRepository businessRepository;
+    @Autowired
+    ItemRepository itemRepository;
 
     HashMap<Business, MarkerFeature> businessFeatureHashMap = new HashMap<>();
+
+    public void createBusiness(String title, String address, double x, double y){
+        Coordinate coordinate = new Coordinate(x,y);
+        Business.BusinessBuilder builder = new Business.BusinessBuilder();
+        builder.setTitle(title);
+        builder.setCoordinate(coordinate);
+        builder.setAddress(address);
+        builder.build();
+    }
+
+    public void addItem(Business business, Item item){
+        business = businessRepository.findById(business.getId()).orElseThrow(()-> new NoSuchElementException("Business not found"));
+        item = itemRepository.findById(item.getId()).orElseThrow(()-> new NoSuchElementException("Item not found"));
+
+        business.addToMenu(item);
+        businessRepository.save(business);
+    }
 
 
     public void initData(){
