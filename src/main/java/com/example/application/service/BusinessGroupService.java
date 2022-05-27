@@ -37,6 +37,7 @@ public class BusinessGroupService {
     }
 
     public void assignDefaultItems(BusinessGroup businessGroup,Set<Items> items){
+        validateBusinessGroup(businessGroup);
         businessGroupRepository.findById(businessGroup.getId()).orElseThrow(()->new NoSuchElementException("BusinessGroup "+ businessGroup.getId()+ " not found"));
     }
 
