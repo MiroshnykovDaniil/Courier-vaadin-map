@@ -48,7 +48,6 @@ public class BusinessGroupService {
             business.setItems(items);
             businessService.businessRepository.save(business);
         });
-
     }
 
     public void validateBusinessGroup(BusinessGroup businessGroup){
