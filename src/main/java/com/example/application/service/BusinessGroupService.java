@@ -3,6 +3,7 @@ package com.example.application.service;
 
 import com.example.application.model.Business;
 import com.example.application.model.BusinessGroup;
+import com.example.application.model.Item;
 import com.example.application.repository.BusinessGroupRepository;
 import com.example.application.repository.BusinessRepository;
 import com.vaadin.flow.component.charts.model.Items;
@@ -19,6 +20,8 @@ public class BusinessGroupService {
     BusinessGroupRepository businessGroupRepository;
     @Autowired
     BusinessService businessService;
+    @Autowired
+    ItemsService itemsService;
 
 
     public void createBusinessGroup(String title){
@@ -36,9 +39,16 @@ public class BusinessGroupService {
         businessGroupRepository.save(businessGroup);
     }
 
-    public void assignDefaultItems(BusinessGroup businessGroup,Set<Items> items){
+    public void assignDefaultItems(BusinessGroup businessGroup,Set<Item> items){
         validateBusinessGroup(businessGroup);
-        businessGroupRepository.findById(businessGroup.getId()).orElseThrow(()->new NoSuchElementException("BusinessGroup "+ businessGroup.getId()+ " not found"));
+        items.forEach(item -> itemsService.validateItem(item));
+        Set<Business> businesses = businessGroup.getBusinesses();
+        businesses.forEach(business -> {
+            businessService.validateBusiness(business);
+            business.setItems(items);
+            businessService.businessRepository.save(business);
+        });
+
     }
 
     public void validateBusinessGroup(BusinessGroup businessGroup){
