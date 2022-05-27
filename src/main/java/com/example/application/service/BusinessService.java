@@ -36,7 +36,7 @@ public class BusinessService {
     }
 
     public void addItem(Business business, Item item){
-        business = businessRepository.findById(business.getId()).orElseThrow(()-> new NoSuchElementException("Business not found"));
+        validateBusiness(business);
         item = itemRepository.findById(item.getId()).orElseThrow(()-> new NoSuchElementException("Item not found"));
 
         business.addToMenu(item);
@@ -98,5 +98,9 @@ public class BusinessService {
         businessFeatureHashMap.forEach((business, feature) -> {
             map.getFeatureLayer().addFeature(feature);
         });
+    }
+
+    public void validateBusiness(Business business){
+        businessRepository.findById(business.getId()).orElseThrow(()-> new NoSuchElementException("Business not found"));
     }
 }
