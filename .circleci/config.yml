@@ -14,9 +14,6 @@ jobs:
     docker:
       - image: cimg/openjdk:11.0
       - image: cimg/postgres:14.2.0
-        auth:
-          username: postgres
-          password: danielq
 
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
@@ -30,11 +27,15 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run: sudo apt-get update
       - run: sudo apt-get install postgresql-client
-
-      - run: |
-          psql \
-          -d 127.0.0.1 \
-          -c "CREATE DATABASE vaadinmap"
+      - run: 
+          name: Create user and db
+          command: |
+            sudo -u postgres ALTER USER postgres WITH PASSWORD 'danielq'
+            sudo -u postgres createdb vaadinmap
+      # - run: |
+      #     psql \
+      #     -d 127.0.0.1 \
+      #     -c "CREATE DATABASE vaadinmap"
 
 
 
