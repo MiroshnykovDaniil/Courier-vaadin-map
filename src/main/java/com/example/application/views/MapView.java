@@ -29,7 +29,7 @@ import java.util.List;
 
 @SpringComponent
 @Component
-public class BusinessView extends VerticalLayout {
+public class MapView extends VerticalLayout {
 
 
     HashMap<MarkerFeature, Business> businessLookup = new HashMap<>();
@@ -37,7 +37,7 @@ public class BusinessView extends VerticalLayout {
 
     Map map = new Map();
 
-    public BusinessView(@Autowired BusinessGroupService businessGroupService, @Autowired MarkerService markerService){
+    public MapView(@Autowired BusinessGroupService businessGroupService, @Autowired MarkerService markerService){
         this.setHeightFull();
         this.setPadding(false);
         this.setSpacing(false);
@@ -67,6 +67,7 @@ public class BusinessView extends VerticalLayout {
         Dialog dialog = new Dialog();
         VerticalLayout dialogLayout = createDialogLayout();
         dialog.add(dialogLayout);
+
 
         BusinessService service = new BusinessService();
         service.initData();

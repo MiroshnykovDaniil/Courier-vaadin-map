@@ -1,31 +1,20 @@
 package com.example.application.views.about;
 
-import com.example.application.model.Business;
 import com.example.application.service.BusinessGroupService;
-import com.example.application.service.BusinessService;
 import com.example.application.service.MarkerService;
-import com.example.application.views.BusinessView;
+import com.example.application.views.MapView;
 import com.example.application.views.MainLayout;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.map.Map;
 import com.vaadin.flow.component.map.configuration.Coordinate;
 import com.vaadin.flow.component.map.configuration.View;
-import com.vaadin.flow.component.map.configuration.feature.MarkerFeature;
 import com.vaadin.flow.component.map.configuration.layer.TileLayer;
 import com.vaadin.flow.component.map.configuration.source.OSMSource;
 import com.vaadin.flow.component.map.configuration.source.XYZSource;
-import com.vaadin.flow.component.map.configuration.style.Icon;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.StreamResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -46,7 +35,7 @@ public class AboutView extends VerticalLayout {
         setJustifyContentMode(JustifyContentMode.CENTER);
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         getStyle().set("text-align", "center");
-        add(new BusinessView(businessGroupService,markerService));
+        add(new MapView(businessGroupService,markerService));
 
         add(new Paragraph("It’s a place where you can grow your own UI 🤗"));
     }
