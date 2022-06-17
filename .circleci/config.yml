@@ -31,8 +31,8 @@ jobs:
       - run: 
           name: Create user and db
           command: |
-            sudo -u postgres ALTER USER postgres WITH PASSWORD 'danielq'
-            sudo -u postgres createdb vaadinmap
+            sudo psql ALTER USER postgres WITH PASSWORD 'danielq'
+            sudo psql createdb vaadinmap
       # - run: |
       #     psql \
       #     -d 127.0.0.1 \
