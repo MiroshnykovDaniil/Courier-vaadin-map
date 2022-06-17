@@ -2,11 +2,14 @@ package com.example.application.views;
 
 import com.example.application.model.Business;
 import com.example.application.model.BusinessGroup;
+import com.example.application.model.Item;
 import com.example.application.model.Marker;
 import com.example.application.service.BusinessGroupService;
 import com.example.application.service.BusinessService;
 import com.example.application.service.MarkerService;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.map.Map;
 import com.vaadin.flow.component.map.configuration.Coordinate;
 import com.vaadin.flow.component.map.configuration.View;
@@ -16,7 +19,6 @@ import com.vaadin.flow.component.map.configuration.source.OSMSource;
 import com.vaadin.flow.component.map.configuration.style.Icon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +39,8 @@ public class MapView extends VerticalLayout {
 
     Map map = new Map();
 
-    public MapView(@Autowired BusinessGroupService businessGroupService, @Autowired MarkerService markerService){
+    public MapView(@Autowired BusinessGroupService businessGroupService, @Autowired MarkerService markerService,
+                   @Autowired BusinessService businessService){
         this.setHeightFull();
         this.setPadding(false);
         this.setSpacing(false);
@@ -49,11 +52,14 @@ public class MapView extends VerticalLayout {
                 .set("text-align", "center");
         this.businessGroupService = businessGroupService;
         this.markerService = markerService;
+        this.businessService = businessService;
+
         init();
 
     }
     BusinessGroupService businessGroupService;
     MarkerService markerService;
+    BusinessService businessService;
 
     @PostConstruct
     public void init(){
@@ -64,9 +70,6 @@ public class MapView extends VerticalLayout {
 
     public void addIcons(Map map) {
 
-        Dialog dialog = new Dialog();
-        VerticalLayout dialogLayout = createDialogLayout();
-        dialog.add(dialogLayout);
 
 
         BusinessService service = new BusinessService();
@@ -88,18 +91,30 @@ public class MapView extends VerticalLayout {
 
 
         map.addFeatureClickListener(e -> {
-            dialog.open();
+            Dialog dialog = new Dialog();
+            VerticalLayout dialogLayout = createDialogLayout(businessLookup.get(e.getFeature()));
+            dialog.add(dialogLayout);
+
+
             dialog.add();
+            dialog.open();
         });
     }
 
-    private static VerticalLayout createDialogLayout() {
-
-        TextField title = new TextField("Title");
-        TextField description = new TextField("description");
+    private VerticalLayout createDialogLayout(Business business) {
+        Label title = new Label("Menu:");
+        List<Item> items = businessService.findAllByBusinessId(business);
+        Grid<Item> menu = new Grid();
+        menu.setSelectionMode(Grid.SelectionMode.MULTI);
+        menu.addColumn(Item::getTitle).setHeader("Title").setAutoWidth(true);
+        menu.addColumn(Item::getPrice).setHeader("Price").setAutoWidth(true);
+        menu.setItems(items);
+        items.forEach(item -> {
+            //menu.add(new TextField(item.getTitle()+":"+item.getPrice()));
+        });
 
         VerticalLayout dialogLayout = new VerticalLayout(title,
-                description);
+                menu);
         dialogLayout.setPadding(false);
         dialogLayout.setSpacing(false);
         dialogLayout.setAlignItems(FlexComponent.Alignment.STRETCH);

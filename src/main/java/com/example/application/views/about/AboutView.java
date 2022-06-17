@@ -1,6 +1,7 @@
 package com.example.application.views.about;
 
 import com.example.application.service.BusinessGroupService;
+import com.example.application.service.BusinessService;
 import com.example.application.service.MarkerService;
 import com.example.application.views.MapView;
 import com.example.application.views.MainLayout;
@@ -27,7 +28,8 @@ public class AboutView extends VerticalLayout {
 
 
     public AboutView(@Autowired BusinessGroupService businessGroupService,
-                     @Autowired MarkerService markerService) {
+                     @Autowired MarkerService markerService,
+                     @Autowired BusinessService businessService) {
         setSpacing(false);
         add(new H2("Виберіть звідки замовити"));
 
@@ -35,7 +37,7 @@ public class AboutView extends VerticalLayout {
         setJustifyContentMode(JustifyContentMode.CENTER);
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         getStyle().set("text-align", "center");
-        add(new MapView(businessGroupService,markerService));
+        add(new MapView(businessGroupService,markerService, businessService));
 
         add(new Paragraph("It’s a place where you can grow your own UI 🤗"));
     }

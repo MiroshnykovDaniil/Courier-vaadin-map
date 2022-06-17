@@ -25,6 +25,9 @@ public class BusinessService {
 
     HashMap<Business, MarkerFeature> businessFeatureHashMap = new HashMap<>();
 
+    public List<Item> findAllByBusinessId(Business business){
+        return itemRepository.findAllByBusinessId(business.getId());
+    }
 
     public Business createBusiness(String title, String address, double x, double y){
         Coordinate coordinate = new Coordinate(x,y);
@@ -103,4 +106,6 @@ public class BusinessService {
     public void validateBusiness(Business business){
         businessRepository.findById(business.getId()).orElseThrow(()-> new NoSuchElementException("Business not found"));
     }
+
+
 }
