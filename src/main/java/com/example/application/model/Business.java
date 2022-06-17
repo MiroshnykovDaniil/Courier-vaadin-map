@@ -1,6 +1,7 @@
 package com.example.application.model;
 
 import com.vaadin.flow.component.map.configuration.Coordinate;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -10,11 +11,12 @@ import java.util.Set;
 public class Business{
     @Id
     @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
     private String id;
     private String title;
     private String address;
 
-    @OneToMany
+    @ManyToMany
     @Column(name = "items")
     private Set<Item> items;
     @Embedded

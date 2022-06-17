@@ -12,6 +12,8 @@ import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.spring.annotation.SpringComponent;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * The main view is a top-level placeholder for other views.
@@ -26,7 +28,7 @@ public class MainLayout extends AppLayout {
 
         private final Class<? extends Component> view;
 
-        public MenuItemInfo(String menuTitle, String iconClass, Class<? extends Component> view) {
+        public MenuItemInfo(String menuTitle, String iconClass,  Class <? extends Component> view) {
             this.view = view;
             RouterLink link = new RouterLink();
             link.addClassNames("menu-item-link");
@@ -115,7 +117,6 @@ public class MainLayout extends AppLayout {
     private MenuItemInfo[] createMenuItems() {
         return new MenuItemInfo[]{ //
                 new MenuItemInfo("Hello World", "la la-globe", HelloWorldView.class), //
-
                 new MenuItemInfo("About", "la la-file", AboutView.class), //
 
         };

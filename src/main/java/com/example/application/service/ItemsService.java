@@ -15,7 +15,6 @@ public class ItemsService {
     @Autowired
     private ItemRepository itemRepository;
 
-
     public void validateItem(Item item){
         itemRepository.findById(item.getId()).orElseThrow(()-> new NoSuchElementException("Item with id "+item.getId()+" not found"));
     }

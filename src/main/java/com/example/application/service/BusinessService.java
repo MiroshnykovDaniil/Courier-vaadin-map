@@ -6,7 +6,6 @@ import com.example.application.repository.BusinessRepository;
 import com.example.application.repository.ItemRepository;
 import com.vaadin.flow.component.map.Map;
 import com.vaadin.flow.component.map.configuration.Coordinate;
-import com.vaadin.flow.component.map.configuration.Feature;
 import com.vaadin.flow.component.map.configuration.feature.MarkerFeature;
 import com.vaadin.flow.component.map.configuration.style.Icon;
 import com.vaadin.flow.server.StreamResource;
@@ -26,13 +25,14 @@ public class BusinessService {
 
     HashMap<Business, MarkerFeature> businessFeatureHashMap = new HashMap<>();
 
-    public void createBusiness(String title, String address, double x, double y){
+
+    public Business createBusiness(String title, String address, double x, double y){
         Coordinate coordinate = new Coordinate(x,y);
         Business.BusinessBuilder builder = new Business.BusinessBuilder();
         builder.setTitle(title);
         builder.setCoordinate(coordinate);
         builder.setAddress(address);
-        builder.build();
+        return businessRepository.save(builder.build());
     }
 
     public void addItem(Business business, Item item){

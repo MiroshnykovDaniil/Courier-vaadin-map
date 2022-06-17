@@ -1,10 +1,11 @@
 package com.example.application.views.about;
 
 import com.example.application.model.Business;
+import com.example.application.service.BusinessGroupService;
 import com.example.application.service.BusinessService;
+import com.example.application.service.MarkerService;
 import com.example.application.views.BusinessView;
 import com.example.application.views.MainLayout;
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -25,14 +26,19 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.StreamResource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @PageTitle("About")
 @Route(value = "about", layout = MainLayout.class)
+@Component
 public class AboutView extends VerticalLayout {
 
-    public AboutView() {
+
+    public AboutView(@Autowired BusinessGroupService businessGroupService,
+                     @Autowired MarkerService markerService) {
         setSpacing(false);
         add(new H2("Виберіть звідки замовити"));
 
@@ -40,9 +46,7 @@ public class AboutView extends VerticalLayout {
         setJustifyContentMode(JustifyContentMode.CENTER);
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         getStyle().set("text-align", "center");
-
-        BusinessView businessView = new BusinessView();
-        add(businessView);
+        add(new BusinessView(businessGroupService,markerService));
 
         add(new Paragraph("It’s a place where you can grow your own UI 🤗"));
     }

@@ -1,5 +1,7 @@
 package com.example.application.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -8,10 +10,11 @@ public class BusinessGroup {
 
     @Id
     @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
     private String id;
     private String title;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @Column(name = "business")
     private Set<Business> businesses;
 

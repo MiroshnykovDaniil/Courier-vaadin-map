@@ -1,7 +1,11 @@
 package com.example.application.views;
 
 import com.example.application.model.Business;
+import com.example.application.model.BusinessGroup;
+import com.example.application.model.Marker;
+import com.example.application.service.BusinessGroupService;
 import com.example.application.service.BusinessService;
+import com.example.application.service.MarkerService;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.map.Map;
 import com.vaadin.flow.component.map.configuration.Coordinate;
@@ -9,19 +13,31 @@ import com.vaadin.flow.component.map.configuration.View;
 import com.vaadin.flow.component.map.configuration.feature.MarkerFeature;
 import com.vaadin.flow.component.map.configuration.layer.TileLayer;
 import com.vaadin.flow.component.map.configuration.source.OSMSource;
+import com.vaadin.flow.component.map.configuration.style.Icon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.spring.annotation.SpringComponent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
+import java.util.List;
 
+@SpringComponent
+@Component
 public class BusinessView extends VerticalLayout {
 
+
     HashMap<MarkerFeature, Business> businessLookup = new HashMap<>();
+    private static Logger logger = LoggerFactory.getLogger(BusinessGroupService.class);
 
     Map map = new Map();
 
-    public BusinessView(){
+    public BusinessView(@Autowired BusinessGroupService businessGroupService, @Autowired MarkerService markerService){
         this.setHeightFull();
         this.setPadding(false);
         this.setSpacing(false);
@@ -31,11 +47,21 @@ public class BusinessView extends VerticalLayout {
                 .set("flexShrink", "0")
                 .set("background-color", "#FFFCF9")
                 .set("text-align", "center");
+        this.businessGroupService = businessGroupService;
+        this.markerService = markerService;
+        init();
+
+    }
+    BusinessGroupService businessGroupService;
+    MarkerService markerService;
+
+    @PostConstruct
+    public void init(){
         this.add(map);
         setupOsmSource(map);
         addIcons(map);
-
     }
+
     public void addIcons(Map map) {
 
         Dialog dialog = new Dialog();
@@ -45,6 +71,19 @@ public class BusinessView extends VerticalLayout {
         BusinessService service = new BusinessService();
         service.initData();
         service.addIcons(map);
+
+        List<Marker> markerList = markerService.getAll();
+        markerList.forEach(marker -> {
+            BusinessGroup businessGroup = marker.getBusinessGroup();
+            Icon icon = markerService.setupIcon(marker);
+            businessGroup.getBusinesses().forEach(business -> {
+                Coordinate coordinate = business.getCoordinate();
+                MarkerFeature markerFeature = new MarkerFeature(coordinate,icon);
+                businessLookup.put(markerFeature,business);
+                map.getFeatureLayer().addFeature(markerFeature);
+            });
+        });
+//
 
 
         map.addFeatureClickListener(e -> {
